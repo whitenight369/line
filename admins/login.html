@@ -5,8 +5,108 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title></title>
+	<style type="text/css">
+		#container{
+			width: 600px;
+			height: 200px;
+			border: 1px solid #F04124;
+			margin: auto auto;
+			padding: 20px;
+			text-align: center;
+		}
+		#login_success{
+			display: none;
+		}
+	</style>
+	<script src="../js/axios.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		window.onload=function(){
+			var userName=document.getElementById("userName");
+			var pwd=document.getElementById("pwd");
+			var login_out=document.getElementById("login_out");
+			var login=document.getElementById("login");
+			var login_success=document.getElementById("login_success");
+			var bt1=document.getElementById("bt1");
+			var tips=document.getElementById("tips");
+			var tips_success=document.getElementById("tips_success");
+			var jwt=localStorage.getItem("jwt");
+			if(jwt){
+				axios.defaults.headers.common['X-token']=jwt;
+				axios.get("manage.php")
+				.then(function(res){
+					if(res.data.result=="success"){
+						login.style.display="none";
+						login_success.style.display="block";
+						tips_success.innerText=res.data.info.data.userName;
+					}else{
+						login.style.display="block"
+						login_success.style.display="none";
+						tips.innerHTML=res.data.msg;
+					}
+				})
+			}
+			
+			userName.onfocus=function(){
+				tips.innerText="";
+			}
+			userName.focus();
+			
+			bt1.onclick=function(){
+				let params=new URLSearchParams();
+				params.append('userName',userName.value);
+				params.append('pwd',pwd.value);
+				axios.post("manage.php?action=login",params)
+				.then(function(res){
+					console.log(res);
+					if(res.data.result=="success"){
+						jwt=res.data.jwt;
+						localStorage.setItem("jwt",res.data.jwt);
+						axios.defaults.headers.common['X-token']=res.data.jwt;
+						axios.get("manage.php")
+						.then(function(res){
+							console.log(res);
+							if(res.data.result=="success"){
+								login.style.display="none";
+								login_success.style.display="block";
+								tips_success.innerHTML=res.data.info.data.userName;
+							}else{
+								login.style.display="block";
+								login_success.style.display="none";
+								tips.innerText=res.data.msg;
+							}
+						})
+						.catch(function(e){
+							alert("axios.post"+e.message);
+						})
+					}
+				})
+				login_out.onclick=function(){
+					localStorage.removeItem("jwt");
+					login_success.style.display="none";
+					login.style.display="block";
+					tips.innerText='';
+					userName.focus();
+				}
+	
+				
+			}
+			
+		}
+	</script>
 </head>
 <body>
-	
+	<div id="container">
+		<div id="login">
+			<label>用户名:<input type="text" id="userName" /></label><br>
+			<label>密&nbsp;&nbsp;&nbsp;码:<input type="password" id="pwd"></label><br>
+			<div id="tips"></div>
+			<button id="bt1">登录</button>
+		</div>
+		<div id="login_success">
+			欢迎<span id="tips_success">
+				
+			</span>登录;<a href="javascript:;" id="login_out">注销</a>
+		</div>
+	</div>
 </body>
 </html>
