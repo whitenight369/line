@@ -18,7 +18,7 @@ if($action=="login"){
 				'aud' => 'http://localhost', //jwt所面向的用户
 				'iat' => $nowtime, //签发时间
 				'nbf' => $nowtime + 10, //在什么时间之后该jwt才可用
-				'exp' => $nowtime + 60, //过期时间-10min
+				'exp' => $nowtime + 600, //过期时间-10min
 				'data' => [
 				    'userId' => 1,
 				    'userName' => $userName
