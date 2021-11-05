@@ -28,7 +28,6 @@
 					data:{userName:$("#userName").val(),pwd:$("#pwd").val()},
 					dataType:"json",
 					success:function(res){
-						console.log(res);
 						if(res.result=="success"){
 							localStorage.setItem("jwt",res.jwt);
 							location.href="index.html";

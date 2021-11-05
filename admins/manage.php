@@ -18,7 +18,7 @@ if($action=="login"){
 				'aud' => 'http://localhost', //jwt所面向的用户
 				'iat' => $nowtime, //签发时间
 				'nbf' => $nowtime + 10, //在什么时间之后该jwt才可用
-				'exp' => $nowtime + 600, //过期时间-10min
+				'exp' => $nowtime + 3600, //过期时间-10min
 				'data' => [
 				    'userId' => 1,
 				    'userName' => $userName
@@ -35,7 +35,7 @@ if($action=="login"){
 	}
 	echo json_encode($res);
 }else{
-	$jwt=@$_SERVER['HTTP_X_TOKEN'];
+	$jwt=@$_SERVER['HTTP_TOKEN'];
 	if(empty($jwt)){
 		$res['msg']="非法登录";
 		echo json_encode($res);
