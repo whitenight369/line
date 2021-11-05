@@ -17,6 +17,13 @@
 		#mask{
 			display: none;
 		}
+		.sh span{
+			color: #0000FF;
+		}
+		.sh span:hover{
+			text-decoration: underline;
+			cursor: pointer;
+		}
 	</style>
 	<script src="../js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
@@ -64,7 +71,7 @@
 														      +value.author+"]</span>在&lt; "+value.addTime+" &gt;</td></tr>"
 															  +'<tr id="messageContent" data-id="'+value.messageId+'"><td>说:'+value.content+'</td></tr>'
 															  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td>管理员回复道:'+value.reply+"</td></tr>":"")
-															   +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.flag==0?'<span data-id="'+value.messageId+'">'+"未审核</span>":"已审核")+"</td></tr>"
+															   +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
 															   +'<tr data-id="'+value.messageId+'"><td>'			   
 															   +
 															   '<a href="javascript:;" class="delete" id="delete" data-id="'+value.messageId+'">删除</a>| '+
@@ -116,7 +123,7 @@
 																	      +value.author+"]</span>在&lt; "+value.addTime+" &gt;</td></tr>"
 																		  +'<tr id="messageContent" data-id="'+value.messageId+'"><td>说:'+value.content+'</td></tr>'
 																		  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td>管理员回复道:'+value.reply+"</td></tr>":"")
-																		   +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.flag==0?'<span data-id="'+value.messageId+'">'+"未审核</span>":"已审核")+"</td></tr>"
+																		   +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
 																		   +'<tr data-id="'+value.messageId+'"><td>'			   
 																		   +
 																		   '<a href="javascript:;" class="delete" id="delete" data-id="'+value.messageId+'">删除</a>| '+
@@ -169,7 +176,7 @@
 																		      +value.author+"]</span>在&lt; "+value.addTime+" &gt;</td></tr>"
 																			  +'<tr id="messageContent" data-id="'+value.messageId+'"><td>说:'+value.content+'</td></tr>'
 																			  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td>管理员回复道:'+value.reply+"</td></tr>":"")
-																			   +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.flag==0?'<span data-id="'+value.messageId+'">'+"未审核</span>":"已审核")+"</td></tr>"
+																			    +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
 																			   +'<tr data-id="'+value.messageId+'"><td>'			   
 																			   +
 																			   '<a href="javascript:;" class="delete" id="delete" data-id="'+value.messageId+'">删除</a>| '+
@@ -213,11 +220,13 @@
 					let _this=$(this);//存储一下这个触发对象
 					$.ajax({
 						url:"manage.php",
-						type:"POST",
-						data:{token:localStorage.getItem("jwt")},
+						type:"post",
+						headers:{"token":localStorage.getItem("jwt")},
 						dataType:"json",
 						success:function(data){
+							console.log(data);
 							if(data.result=="success"){
+							alert("1111");
 								$.ajax({
 									url:"sh.php",
 									headers:{"token":localStorage.getItem("jwt")},
