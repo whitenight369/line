@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('PRC');
-require 'JTW.php';
+require 'JWT.php';
 use \Firebase\JWT\JWT;
 define("KEY", '1gHuiop975cdashyex9Ud23ldsvm2Xq');
     function vaildata($jwt){

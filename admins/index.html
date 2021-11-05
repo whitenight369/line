@@ -11,6 +11,12 @@
 			height: 40px;
 			border-radius: 20px;
 		}
+		#replyMessage{
+			display: none;
+		}
+		#mask{
+			display: none;
+		}
 	</style>
 	<script src="../js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
@@ -198,15 +204,128 @@
 					}
 
 				
-				}// 下面是鉴权成功的回调函数
+				}// 前面是鉴权成功的回调函数
 				
-				
+			})// 前面是鉴权的括号
 			
-			})// 下面是鉴权的括号
+			function  sh(){
+				$(".sh span").click(function(){
+					let _this=$(this);//存储一下这个触发对象
+					$.ajax({
+						url:"manage.php",
+						type:"POST",
+						data:{token:localStorage.getItem("jwt")},
+						dataType:"json",
+						success:function(data){
+							if(data.result=="success"){
+								$.ajax({
+									url:"sh.php",
+									headers:{"token":localStorage.getItem("jwt")},
+									type:"POST",
+									data:{messageId:_this.attr("data-id")},
+									dataType:'json',
+									success:function(data){
+										if(data.status=="10001"){
+											_this.html("已审核");
+											_this.parent("td").removeClass("sh");
+										}
+									}
+								});//审核的ajx
+							}
+						}
+					})//验证管理员权限的ajax
+				})//点击审核的事件
 			
-			
+			}//审核的函数
 
+				// 删除留言
+			function deleteMessage(){
+				$(".delete").click(function(){
+					let _this=$(this);
+					$.ajax({
+						url:"manage.php",
+						data:{messageId:_this.attr("data-id")},
+						dataType:"json",
+						type:"POST",
+						headers:{"token":localStorage.getItem("jwt")},
+						success:function(res){
+							if(res.result=="success"){
+								$.ajax({
+									url:"delete.php",
+									headers:{"token":localStorage.getItem("jwt")},
+									type:"POST",
+									dataType:"json",
+									data:{messageId:_this.attr("data-id")},
+									success:function(data){
+										if(data.status=="10001"){
+											_this.parents("tr").add($(_this.parents("tr").siblings("tr"+'[data-id='+_this.attr("data-id")+']'))).remove();
+										}else{
+											alert(data.message);
+										}
+									}
+								})
+							}
+						}
+					})
+				})
+			}//删除留言
 			
+			function replyMessage(){
+				$(".replyValue").click(function(){
+					let _this=$(this);
+					$("#replyMessage").show();
+					$("#mask").show();
+					$("#replyBtn").one("click",function(){
+						$.ajax({
+							url:"manage.php",
+							type:"post",
+							headers:{"token":localStorage.getItem("jwt")},
+							dataType:"json",
+							success:function(res){
+								if(res.result=="success"){
+									$.ajax({
+										url:"reply.php",
+										headers:{"token":localStorage.getItem("jwt")},
+										type:"POST",
+										data:{messageId:_this.attr("data-id"),reply:$("#replyContent").val()},
+										dataType:"json",
+										success:function(data){
+											console.log(data);
+											if(data.status=="10001"){
+											$("#replyMessage").hide();
+											$("#mask").hide();
+											$("#replyContent").val("");
+											location.href="index.html";
+											}else{
+												console.log(data.msg);
+											}
+										}
+									});//回复的页面
+								}
+							}
+						});//鉴权的页面
+					});//点击事件
+					
+					
+							 //取消留言:
+							    $("#cannel").click(function(){
+									$("#replyMessage").hide();
+								      $("#mask").hide();
+					
+								});//取消留言
+		
+					
+					
+					
+				})
+			}//回复留言
+			
+			
+			//注销
+				$("#loginout").click(function(){
+				  	 localStorage.removeItem("jwt");
+					 location.href="login.html";
+				});//注销
 			
 			
 		})
