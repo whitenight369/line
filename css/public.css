@@ -1,0 +1,71 @@
+#container{
+	width: 1200px;
+	margin: 0 auto;
+}
+h3{
+	text-align: center;
+}
+input#author,input#title,textarea{
+	resize: none;
+	padding: 3px 5px;
+	border-radius: 4px;
+	outline: none;
+	border: none;
+}
+button{
+	outline: none;
+}
+img{
+			width: 40px;
+			height: 40px;
+			border-radius: 20px;
+			margin-right: 5px;
+		}
+
+.table-hover .fg{
+	background:#0099ff63;
+
+	padding:1px;
+}
+#mask{
+	position: fixed;
+	top:0px;
+	bottom:0px;
+	right:0px;
+	left:0px;
+	background: #000;
+	opacity: 0.5;
+	display: none; 
+}
+#message{
+	width: 450px;
+	height: 400px;
+	position: fixed;
+	top:50%;
+	left:50%;
+	margin-left: -200px;
+	margin-top:-220px;
+	padding: 25px;
+	border-radius: 10px;
+	display: none;
+	background: #0fe7ff;
+	opacity: 0.9;
+}
+
+td.touxiang span{
+	color: #5735ff;
+}
+td.touxiang{
+	height: 40px;
+}
+td.biaoti{
+	font-size: 18px;
+	color: #c03be5;
+}
+td.biaoti span{
+	color: red;
+}
+td.neirong{
+	height: 80px;
+}
+

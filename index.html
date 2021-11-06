@@ -5,12 +5,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/public.css"/>
 	<style type="text/css">
-		img{
-			width: 40px;
-			height: 40px;
-			border-radius: 20px;
-		}
+		
 	</style>
 	<script src="js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
@@ -33,7 +31,7 @@
 				dataType:"json"
 			})
 			$.ajax({//先去取回页数  有页数才能去取留言的数据
-				url:"./admins/rescount.php",
+				url:"rescount.php",
 				success:function(res){
 					console.log(res)
 					rescount=res.rescount;
@@ -47,7 +45,7 @@
 					console.log(res);
 					let str="";
 					$.each(res.data,function(index,value){
-						str+='<tr><td><img src="./img/face/'+value.face+'"><span>['+value.author+']</span>&lt;'+value.addTime+'&gt;</td></tr>'+'<tr><td>标题:[<span id="title">'+value.title+"</span>]</td></tr><tr><td>"+value.content+"</td></tr>"+(value.reply!=null?'<tr><td>管理员回复到:'+value.reply+"</td></tr>":"")
+						str+='<tr><td class="touxiang"><img src="./img/face/'+value.face+'">[<span>'+value.author+'</span>]在&lt;'+value.addTime+'&gt;说</td></tr>'+'<tr><td  class="biaoti">标题:[<span id="title">'+value.title+"</span>]</td></tr><tr><td  class='neirong'>"+value.content+"</td></tr>"+(value.reply!=null?'<tr><td class="glreply">管理员回复到:<em>'+value.reply+"</em></td></tr>":"")
 					});
 					$("h3+.table-hover").html(str);
 				}else{
@@ -58,7 +56,7 @@
 			// 留言封装
 			
 			$.ajax({//取留言
-				url:"./admins/message.php",
+				url:"message.php",
 				data:{page:page},
 				cache:false,
 				success:function(res){
@@ -111,19 +109,19 @@
 				}
 			})//点击上一页的事件
 			
-			$("#message").hide();
 			// 发布留言
-			let flag2=true;
 			function  leaveMessage(){
 				$("#leaveMessageBtn").click(function(){
 					
-					if(flag2){//显示隐藏
-						$("#message").show();
-						flag2=false;
-					}else{
-						flag2=true;
-						$("#message").hide();
-					}//显示隐藏
+					 $("#message").show();
+						    $("#mask").show();
+							$("#cannel").click(function(){
+					
+					             $("#message").hide();
+					             $("#mask").hide();
+					             $("#leaveContent").html("");
+							});
+					
 					
 					$("#leaveBtn").click(function(){
 						$.ajax({
@@ -164,7 +162,15 @@
 		<input type="button" class="btn btn-default" id="cannel" value="取消">
 	</div>
 	<a href="javascript:;" id="leaveMessageBtn">发表留言</a>
-	<h3>青春色彩留言板</h3>
+	
+	
+	
+	<div id="container">
+		
+
+	
+	
+	<h3>Message</h3>
 	<table class="table table-hover">
 	 
 	</table>
@@ -174,5 +180,6 @@
 	</div>
 	
 	<a href="admins/login.html">管理员登录</a>
+		</div>
 </body>
 </html>
