@@ -1,8 +1,16 @@
+body{
+	background: url(../img/bg-1.png) no-repeat;
+	background-size: cover;
+}
 #container{
 	width: 1200px;
 	margin: 0 auto;
+	background-color: #eee;
+	opacity: 0.8;
+	font-size: 16px;
 }
 h3{
+	line-height: 30px;
 	text-align: center;
 }
 input#author,input#title,textarea{
@@ -43,6 +51,7 @@ img{
 	position: fixed;
 	top:50%;
 	left:50%;
+	z-index: 999;
 	margin-left: -200px;
 	margin-top:-220px;
 	padding: 25px;
@@ -69,3 +78,7 @@ td.neirong{
 	height: 80px;
 }
 
+
+#page{
+	text-align: center;
+}
