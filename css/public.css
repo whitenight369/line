@@ -82,3 +82,35 @@ td.neirong{
 #page{
 	text-align: center;
 }
+
+
+
+/* 后台部分 */
+#adminName{
+	color: #F04124;
+}
+.sh span{
+	color: #0000FF;
+	}
+.sh span:hover{
+	text-decoration: underline;
+	cursor: pointer;
+	}
+	
+	/* 回复消息 */
+	#replyMessage{
+		width: 450px;
+		height: 400px;
+		position: fixed;
+		top:50%;
+		left:50%;
+		z-index: 999;
+		margin-left: -200px;
+		margin-top:-220px;
+		padding: 25px;
+		border-radius: 10px;
+		display: none;
+		background: #0fe7ff;
+		opacity: 0.9;
+	}
+	

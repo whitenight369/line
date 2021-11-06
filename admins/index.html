@@ -5,32 +5,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title></title>
-	<style type="text/css">
-		img{
-			width: 40px;
-			height: 40px;
-			border-radius: 20px;
-		}
-		#replyMessage{
-			display: none;
-		}
-		#mask{
-			display: none;
-		}
-		.sh span{
-			color: #0000FF;
-		}
-		.sh span:hover{
-			text-decoration: underline;
-			cursor: pointer;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/public.css"/>
 	<script src="../js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
 			var rscount=0;//总留言数
 			var pagecount=1;//总页数
 			var page=1;//当前页数
+			
+			function ly(data){
+				let str="";
+				if(data.status=="10001"){
+					$.each(data.data,function(index,value){
+						str+='<tr data-id="'+value.messageId+'"><td class="touxiang"><img src="../img/face/'+value.face+'"><span>['
+										      +value.author+"]</span>在&lt; "+value.addTime+" &gt;说:</td></tr>"
+											  +'<tr id="messageContent" data-id="'+value.messageId+'"><td class="neirong">'+value.content+'</td></tr>'
+											  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td class="glreply">管理员回复道:'+value.reply+"</td></tr>":"")
+											    +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
+											   +'<tr data-id="'+value.messageId+'"><td>'			   
+											   +
+											   '<a href="javascript:;" class="delete" id="delete" data-id="'+value.messageId+'">删除</a>| '+
+											   '<a href="javascript:;" class="replyValue" data-id="'+value.messageId+'">回复留言</a>'
+											   +'</td></tr>'
+											  +'<tr data-id="'+value.messageId+'"><td class="fg"> </td></tr>';
+					});//each循环输出
+					$("h3+.table-hover").html(str);//添加留言到指定的元素中
+					sh();//每一页都要进行事件绑定  绑定删除和留言发布
+					deleteMessage();
+					replyMessage();
+				}else{
+					str="<tr><td>"+data.msg+"</td></tr>";
+					$("h3+.table-hover").html(str);
+				}
+			}
+			
 			// 需要先鉴权  才能给管理员查看本页面的权限
 			$.ajax({
 				url:"manage.php",
@@ -64,29 +73,7 @@
 							dataType:"json",
 							cache:false,
 							success:function(data){
-								let str="";
-								if(data.status=="10001"){
-									$.each(data.data,function(index,value){
-										str+='<tr data-id="'+value.messageId+'"><td><img src="../img/face/'+value.face+'"><span>['
-														      +value.author+"]</span>在&lt; "+value.addTime+" &gt;</td></tr>"
-															  +'<tr id="messageContent" data-id="'+value.messageId+'"><td>说:'+value.content+'</td></tr>'
-															  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td>管理员回复道:'+value.reply+"</td></tr>":"")
-															   +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
-															   +'<tr data-id="'+value.messageId+'"><td>'			   
-															   +
-															   '<a href="javascript:;" class="delete" id="delete" data-id="'+value.messageId+'">删除</a>| '+
-															   '<a href="javascript:;" class="replyValue" data-id="'+value.messageId+'">回复留言</a>'
-															   +'</td></tr>'
-															  +'<tr data-id="'+value.messageId+'"><td class="fg"> </td></tr>';
-									});//each循环输出
-									$("h3+.table-hover").html(str);//添加留言到指定的元素中
-									sh();//每一页都要进行事件绑定  绑定删除和留言发布
-									deleteMessage();
-									replyMessage();
-								}else{
-									str="<tr><td>"+data.msg+"</td></tr>";
-									$("h3+.table-hover").html(str);
-								}
+								ly(data);
 							},
 							
 						})//显示留言的ajax
@@ -116,29 +103,7 @@
 										dataType:"json",
 										cache:false,
 										success:function(data){
-											let str="";
-											if(data.status=="10001"){
-												$.each(data.data,function(index,value){
-													str+='<tr data-id="'+value.messageId+'"><td><img src="../img/face/'+value.face+'"><span>['
-																	      +value.author+"]</span>在&lt; "+value.addTime+" &gt;</td></tr>"
-																		  +'<tr id="messageContent" data-id="'+value.messageId+'"><td>说:'+value.content+'</td></tr>'
-																		  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td>管理员回复道:'+value.reply+"</td></tr>":"")
-																		   +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
-																		   +'<tr data-id="'+value.messageId+'"><td>'			   
-																		   +
-																		   '<a href="javascript:;" class="delete" id="delete" data-id="'+value.messageId+'">删除</a>| '+
-																		   '<a href="javascript:;" class="replyValue" data-id="'+value.messageId+'">回复留言</a>'
-																		   +'</td></tr>'
-																		  +'<tr data-id="'+value.messageId+'"><td class="fg"> </td></tr>';
-												});//each循环输出
-												$("h3+.table-hover").html(str);//添加留言到指定的元素中
-												sh();//每一页都要进行事件绑定  绑定删除和留言发布
-												deleteMessage();
-												replyMessage();
-											}else{
-												str="<tr><td>"+data.msg+"</td></tr>";
-												$("h3+.table-hover").html(str);
-											}
+											ly(data)
 										},
 										
 									})//显示留言的ajax
@@ -169,29 +134,7 @@
 											dataType:"json",
 											cache:false,
 											success:function(data){
-												let str="";
-												if(data.status=="10001"){
-													$.each(data.data,function(index,value){
-														str+='<tr data-id="'+value.messageId+'"><td><img src="../img/face/'+value.face+'"><span>['
-																		      +value.author+"]</span>在&lt; "+value.addTime+" &gt;</td></tr>"
-																			  +'<tr id="messageContent" data-id="'+value.messageId+'"><td>说:'+value.content+'</td></tr>'
-																			  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td>管理员回复道:'+value.reply+"</td></tr>":"")
-																			    +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
-																			   +'<tr data-id="'+value.messageId+'"><td>'			   
-																			   +
-																			   '<a href="javascript:;" class="delete" id="delete" data-id="'+value.messageId+'">删除</a>| '+
-																			   '<a href="javascript:;" class="replyValue" data-id="'+value.messageId+'">回复留言</a>'
-																			   +'</td></tr>'
-																			  +'<tr data-id="'+value.messageId+'"><td class="fg"> </td></tr>';
-													});//each循环输出
-													$("h3+.table-hover").html(str);//添加留言到指定的元素中
-													sh();//每一页都要进行事件绑定  绑定删除和留言发布
-													deleteMessage();
-													replyMessage();
-												}else{
-													str="<tr><td>"+data.msg+"</td></tr>";
-													$("h3+.table-hover").html(str);
-												}
+												ly(data);
 											},
 											
 										})//显示留言的ajax
@@ -316,12 +259,12 @@
 					});//点击事件
 					
 					
-							 //取消留言:
+							 //取消回复留言:
 							    $("#cannel").click(function(){
 									$("#replyMessage").hide();
 								      $("#mask").hide();
 					
-								});//取消留言
+								});//取消回复留言
 		
 					
 					
@@ -348,15 +291,39 @@
 		<input type="button" class="btn btn-default" id="replyBtn" value="回复留言">
 		<input type="button" class="btn btn-default" id="cannel" value="取消">
 	</div>
-	<p>欢迎管理员[<span id="adminName"></span>]</p>进入管理系统！
-	<table class="table table-hover">
-	<h3>青春色彩留言板</h3>
 	
+	
+	
+	<div id="container">
+
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header"><a href="javascript:;" class="navbar-brand" id="leaveMessageBtn">发表留言</a></div>
+		 <div class="navbar-header"><a href="javascript:;" class="navbar-brand" id="leaveMessageBtn">首页</a></div>
+	
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a>欢迎管理员[<span id="adminName"></span>]进入管理系统!</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	
+	
+	
+	<h3>Message</h3>
+	<table class="table table-hover">
 	 
 	</table>
 	<div id="page">
 	   <a href="javascript:;" class="btn btn-info">上一页</a>
 	   <a href="javascript:;" class="btn btn-info">下一页</a>
 	</div>
+	
+	
+		</div>
 </body>
 </html>
