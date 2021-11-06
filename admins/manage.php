@@ -11,7 +11,8 @@ if($action=="login"){
 		$pwd=md5($_POST['pwd']);
 		include("conn.php");
 		$res1=mysqli_query($conn,"select * from admins where admins='$userName' and pwd='$pwd'");
-		if($res1){
+		$num=mysqli_fetch_array($res1);
+		if($num){
 			$nowtime=time();
 			$token=[
 				'iss' => 'http://localhost', //签发者

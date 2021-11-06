@@ -8,6 +8,12 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/public.css"/>
 	<script src="../js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		body{
+			background: url(../img/bg-4.png)no-repeat;
+			background-size: cover;
+		}
+	</style>
 	<script type="text/javascript">
 		$(function(){
 			var rscount=0;//总留言数
@@ -21,7 +27,7 @@
 						str+='<tr data-id="'+value.messageId+'"><td class="touxiang"><img src="../img/face/'+value.face+'"><span>['
 										      +value.author+"]</span>在&lt; "+value.addTime+" &gt;说:</td></tr>"
 											  +'<tr id="messageContent" data-id="'+value.messageId+'"><td class="neirong">'+value.content+'</td></tr>'
-											  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td class="glreply">管理员回复道:'+value.reply+"</td></tr>":"")
+											  +(value.reply!=null?'<tr data-id="'+value.messageId+'"><td class="glreply">管理员回复道:<em><strong>'+value.reply+"</strong></em></td></tr>":"")
 											    +'<tr data-id="'+value.messageId+'"><td class="sh">审核状态:'+(value.sh==0?'<span data-id="'+value.messageId+'">'+"未审核(点击审核)</span>":"已审核")+"</td></tr>"
 											   +'<tr data-id="'+value.messageId+'"><td>'			   
 											   +
@@ -299,14 +305,15 @@
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
-	    <div class="navbar-header"><a href="javascript:;" class="navbar-brand" id="leaveMessageBtn">发表留言</a></div>
-		 <div class="navbar-header"><a href="javascript:;" class="navbar-brand" id="leaveMessageBtn">首页</a></div>
+		 <div class="navbar-header"><a href="../index.html" class="navbar-brand" id="leaveMessageBtn">首页</a></div>
+		
 	
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	
 	      <ul class="nav navbar-nav navbar-right">
 	        <li><a>欢迎管理员[<span id="adminName"></span>]进入管理系统!</a></li>
+			<li><a id="loginout">注销</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->

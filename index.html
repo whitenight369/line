@@ -8,7 +8,10 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" href="css/public.css"/>
 	<style type="text/css">
-		
+		body{
+			background: url(img/bg-5.png) no-repeat;
+			background-size: cover;
+		}
 	</style>
 	<script src="js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
@@ -45,7 +48,7 @@
 					console.log(res);
 					let str="";
 					$.each(res.data,function(index,value){
-						str+='<tr><td class="touxiang"><img src="./img/face/'+value.face+'">[<span>'+value.author+'</span>]在&lt;'+value.addTime+'&gt;说</td></tr>'+'<tr><td  class="biaoti">标题:[<span id="title">'+value.title+"</span>]</td></tr><tr><td  class='neirong'>"+value.content+"</td></tr>"+(value.reply!=null?'<tr><td class="glreply">管理员回复到:<em>'+value.reply+"</em></td></tr>":"")
+						str+='<tr><td class="touxiang"><img src="./img/face/'+value.face+'">[<span>'+value.author+'</span>]在&lt;'+value.addTime+'&gt;说</td></tr>'+'<tr><td  class="biaoti">标题:[<span id="title">'+value.title+"</span>]</td></tr><tr><td  class='neirong'>"+value.content+"</td></tr>"+(value.reply!=null?'<tr><td class="glreply">管理员回复到:<em><strong>'+value.reply+"</strong></em></td></tr>":"")
 					});
 					$("h3+.table-hover").html(str);
 				}else{
