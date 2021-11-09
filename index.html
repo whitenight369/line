@@ -14,6 +14,10 @@
 		}
 	</style>
 	<script src="js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="前端mock/mock.js" type="text/javascript" charset="utf-8"></script>
+	<script src="前端mock/rescount.js" type="text/javascript" charset="utf-8"></script>
+	<script src="前端mock/message.js" type="text/javascript" charset="utf-8"></script>
+	<script src="前端mock/leavemessage.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
 			let page=1;
@@ -36,16 +40,17 @@
 			$.ajax({//先去取回页数  有页数才能去取留言的数据
 				url:"rescount.php",
 				success:function(res){
-					console.log(res)
+					console.log("留言条数是",res)
 					rescount=res.rescount;
 					pagecount=Math.ceil(rescount/5);
+					console.log("总页数是",pagecount);
 				}
 			})//计算出总页数
 			
 			// 留言封装   --->取回留言之后的一些操作
 			function ly(res){
+
 				if(res.status=="10001"){
-					console.log(res);
 					let str="";
 					$.each(res.data,function(index,value){
 						str+='<tr><td class="touxiang"><img src="./img/face/'+value.face+'">[<span>'+value.author+'</span>]在&lt;'+value.addTime+'&gt;说</td></tr>'+'<tr><td  class="biaoti">标题:[<span id="title">'+value.title+"</span>]</td></tr><tr><td  class='neirong'>"+value.content+"</td></tr>"+(value.reply!=null?'<tr><td class="glreply">管理员回复到:<em><strong>'+value.reply+"</strong></em></td></tr>":"")
@@ -80,8 +85,8 @@
 				}
 				if(page>=1&&flag){
 					$.ajax({
-						url:"./admins/message.php",
-						data:{page:page},
+						url:"message.php",
+						data:{page:page,pagecount:pagecount},
 						cache:false,
 						success:function(res){
 							ly(res);
@@ -102,8 +107,8 @@
 				}
 				if(page<=pagecount&&flag1){
 					$.ajax({
-						url:"./admins/message.php",
-						data:{page:page},
+						url:"message.php",
+						data:{page:page,pagecount:pagecount},
 						cache:false,
 						success:function(res){
 							ly(res);
@@ -128,11 +133,14 @@
 					
 					$("#leaveBtn").click(function(){
 						$.ajax({
-							url:"leaveMessage.php",
+							url:"leavemessage.php",
 							data:{author:$("#author").val(),title:$("#title").val(),content:$("#leaveContent").val(),face:$("#face").val()},
 							success:function(res){
-								console.log(res);
+								res=JSON.parse(res);
+								console.log(res.msg);
 								if(res.status=="10001"){
+									alert(res.msg);
+									// alert(res.msg);
 									$("#message").hide();
 									flag2=true;
 									$("#leaveContent").html("");

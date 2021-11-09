@@ -14,9 +14,12 @@
 			background-size: cover;
 		}
 	</style>
+	<script src="../后台mock/mock.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../后台mock/rescount.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../后台mock/message.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
-			var rscount=0;//总留言数
+			var rescount=0;//总留言数
 			var pagecount=1;//总页数
 			var page=1;//当前页数
 			
@@ -62,20 +65,23 @@
 							type:"POST",
 							dataType:"json",
 							success:function(res){
+								console.log(res);
 								if(res.result=="success"){
-									console.log(res.rescount);
-									rscount=res.rescount;
-									pagecount=Math.ceil(rscount/5);
+									// console.log(res.rescount);
+									rescount=res.rescount;
+									pagecount=Math.ceil(rescount/5);
+									// console.log(pagecount);
 								}
 							}
 						})
 						// 上面是总页数的获取方式   meiwenti l 
 						
 						//显示留言
+				
 						$.ajax({
 							url:"message.php",
 							type:"post",
-							data:{page:page},
+							data:{page:page,pagecount:pagecount},
 							dataType:"json",
 							cache:false,
 							success:function(data){
@@ -105,7 +111,7 @@
 									$.ajax({
 										url:"message.php",
 										type:"post",
-										data:{page:page},
+										data:{page:page,pagecount:pagecount},
 										dataType:"json",
 										cache:false,
 										success:function(data){
@@ -136,7 +142,7 @@
 										$.ajax({
 											url:"message.php",
 											type:"post",
-											data:{page:page},
+											data:{page:page,pagecount:pagecount},
 											dataType:"json",
 											cache:false,
 											success:function(data){
