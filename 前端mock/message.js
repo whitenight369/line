@@ -2,10 +2,10 @@ var nocache =  new Date().getTime();
 var data=Mock.mock("message.php","post",function(a1){
 	console.log(a1);
 	let a2=new URLSearchParams(a1.body);
-	let page=a2.get("page");
-	let pagecount=a2.get("pagecount");
+	var page=a2.get("page");
+	var pagecount=a2.get("pagecount");
 	console.log("page",page);//这里的第一页传过来会显示不存在
-	if(page<pagecount||page=1){
+	if(page<=pagecount||page==1){
 		console.log("11");
 		let data1 = Mock.mock({
 			'status|1':["10001"],

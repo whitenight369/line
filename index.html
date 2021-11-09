@@ -65,7 +65,7 @@
 			
 			$.ajax({//取留言
 				url:"message.php",
-				data:{page:page},
+				data:{page:page,pagecount:pagecount},
 				cache:false,
 				success:function(res){
 					ly(res);
