@@ -6,7 +6,6 @@ var data=Mock.mock("message.php","post",function(a1){
 	var pagecount=a2.get("pagecount");
 	console.log("page",page);//这里的第一页传过来会显示不存在
 	if(page<=pagecount||page==1){
-		console.log("11");
 		let data1 = Mock.mock({
 			'status|1':["10001"],
 		    // 属性 list 的值是一个数组，其中含有 1 到 10 个元素

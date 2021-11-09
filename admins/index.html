@@ -17,6 +17,9 @@
 	<script src="../后台mock/mock.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../后台mock/rescount.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../后台mock/message.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../后台mock/reply.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../后台mock/delete.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../后台mock/sh.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
 			var rescount=0;//总留言数
@@ -24,6 +27,7 @@
 			var page=1;//当前页数
 			
 			function ly(data){
+				console.log("ly",data)
 				let str="";
 				if(data.status=="10001"){
 					$.each(data.data,function(index,value){
@@ -85,8 +89,9 @@
 							dataType:"json",
 							cache:false,
 							success:function(data){
+								console.log("ajx",data);
 								ly(data);
-							},
+							}
 							
 						})//显示留言的ajax
 						
@@ -181,7 +186,6 @@
 						success:function(data){
 							console.log(data);
 							if(data.result=="success"){
-							alert("1111");
 								$.ajax({
 									url:"sh.php",
 									headers:{"token":localStorage.getItem("jwt")},
@@ -221,6 +225,7 @@
 									dataType:"json",
 									data:{messageId:_this.attr("data-id")},
 									success:function(data){
+										console.log(data);
 										if(data.status=="10001"){
 											_this.parents("tr").add($(_this.parents("tr").siblings("tr"+'[data-id='+_this.attr("data-id")+']'))).remove();
 										}else{

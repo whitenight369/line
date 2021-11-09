@@ -1,11 +1,11 @@
 var nocache =  new Date().getTime();
-var data=Mock.mock("message.php","post",function(a1){
-	console.log(a1);
-	let a2=new URLSearchParams(a1.body);
-	let page=a2.get("page");
-	let pagecount=a2.get("pagecount");
+var data=Mock.mock("message.php","post",function(options){
+	console.log(options.body)
+	var a2=new URLSearchParams(options.body);
+	var page=a2.get("page");
+	var pagecount=a2.get("pagecount");
 	console.log("page",page);//这里的第一页传过来会显示不存在
-	if(page<pagecount||page==1){
+	if(page<=pagecount||page==1){
 		var data1 = Mock.mock({
 			'status|1':["10001"],
 		    // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
